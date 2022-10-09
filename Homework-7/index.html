@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        #map {
+            width: 1245px;
+            height: 791px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/cb_2018_us_state_5m_0.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        function pop_cb_2018_us_state_5m_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATEFP'] !== null ? autolinker.link(feature.properties['STATEFP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATENS'] !== null ? autolinker.link(feature.properties['STATENS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AFFGEOID'] !== null ? autolinker.link(feature.properties['AFFGEOID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEOID'] !== null ? autolinker.link(feature.properties['GEOID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STUSPS'] !== null ? autolinker.link(feature.properties['STUSPS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LSAD'] !== null ? autolinker.link(feature.properties['LSAD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ALAND'] !== null ? autolinker.link(feature.properties['ALAND'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AWATER'] !== null ? autolinker.link(feature.properties['AWATER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Number of Households (in 1000)'] !== null ? autolinker.link(feature.properties['catsvdogs_Number of Households (in 1000)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Percentage of households with pets'] !== null ? autolinker.link(feature.properties['catsvdogs_Percentage of households with pets'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Number of Pet Households (in 1000)'] !== null ? autolinker.link(feature.properties['catsvdogs_Number of Pet Households (in 1000)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Percentage of Dog Owners'] !== null ? autolinker.link(feature.properties['catsvdogs_Percentage of Dog Owners'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Dog Owning Households (1000s)'] !== null ? autolinker.link(feature.properties['catsvdogs_Dog Owning Households (1000s)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Mean Number of Dogs per household'] !== null ? autolinker.link(feature.properties['catsvdogs_Mean Number of Dogs per household'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Dog Population (in 1000)'] !== null ? autolinker.link(feature.properties['catsvdogs_Dog Population (in 1000)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Percentage of Cat Owners'] !== null ? autolinker.link(feature.properties['catsvdogs_Percentage of Cat Owners'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Cat Owning Households'] !== null ? autolinker.link(feature.properties['catsvdogs_Cat Owning Households'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Mean Number of Cats'] !== null ? autolinker.link(feature.properties['catsvdogs_Mean Number of Cats'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_Cat Population'] !== null ? autolinker.link(feature.properties['catsvdogs_Cat Population'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_us pop'] !== null ? autolinker.link(feature.properties['catsvdogs_us pop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['catsvdogs_field_14'] !== null ? autolinker.link(feature.properties['catsvdogs_field_14'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_cb_2018_us_state_5m_0_0(feature) {
+            if (feature.properties['catsvdogs_Percentage of Cat Owners'] >= 11.600000 && feature.properties['catsvdogs_Percentage of Cat Owners'] <= 11.600000 ) {
+                return {
+                pane: 'pane_cb_2018_us_state_5m_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,251,253,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['catsvdogs_Percentage of Cat Owners'] >= 11.600000 && feature.properties['catsvdogs_Percentage of Cat Owners'] <= 30.300000 ) {
+                return {
+                pane: 'pane_cb_2018_us_state_5m_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(220,219,236,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['catsvdogs_Percentage of Cat Owners'] >= 30.300000 && feature.properties['catsvdogs_Percentage of Cat Owners'] <= 34.600000 ) {
+                return {
+                pane: 'pane_cb_2018_us_state_5m_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,159,203,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['catsvdogs_Percentage of Cat Owners'] >= 34.600000 && feature.properties['catsvdogs_Percentage of Cat Owners'] <= 40.200000 ) {
+                return {
+                pane: 'pane_cb_2018_us_state_5m_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,81,163,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['catsvdogs_Percentage of Cat Owners'] >= 40.200000 && feature.properties['catsvdogs_Percentage of Cat Owners'] <= 49.500000 ) {
+                return {
+                pane: 'pane_cb_2018_us_state_5m_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,0,125,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_cb_2018_us_state_5m_0');
+        map.getPane('pane_cb_2018_us_state_5m_0').style.zIndex = 400;
+        map.getPane('pane_cb_2018_us_state_5m_0').style['mix-blend-mode'] = 'normal';
+        var layer_cb_2018_us_state_5m_0 = new L.geoJson(json_cb_2018_us_state_5m_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_cb_2018_us_state_5m_0',
+            layerName: 'layer_cb_2018_us_state_5m_0',
+            pane: 'pane_cb_2018_us_state_5m_0',
+            onEachFeature: pop_cb_2018_us_state_5m_0,
+            style: style_cb_2018_us_state_5m_0_0,
+        });
+        bounds_group.addLayer(layer_cb_2018_us_state_5m_0);
+        map.addLayer(layer_cb_2018_us_state_5m_0);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_cb_2018_us_state_5m_0,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'catsvdogs_field_14'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"LSAD": "str","GEOID": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_LSAD = document.createElement('div');
+            div_LSAD.id = "div_LSAD";
+            div_LSAD.className= "filterselect";
+            document.getElementById("menu").appendChild(div_LSAD);
+            sel_LSAD = document.createElement('select');
+            sel_LSAD.multiple = true;
+            sel_LSAD.size = 1;
+            sel_LSAD.id = "sel_LSAD";
+            var LSAD_options_str = "<option value='' unselected></option>";
+            sel_LSAD.onchange = function(){filterFunc()};
+            LSAD_options_str  += '<option value="00">00</option>';
+            sel_LSAD.innerHTML = LSAD_options_str;
+            div_LSAD.appendChild(sel_LSAD);
+            var lab_LSAD = document.createElement('div');
+            lab_LSAD.innerHTML = 'LSAD';
+            lab_LSAD.className = 'filterlabel';
+            div_LSAD.appendChild(lab_LSAD);
+            var reset_LSAD = document.createElement('div');
+            reset_LSAD.innerHTML = 'clear filter';
+            reset_LSAD.className = 'filterlabel';
+            reset_LSAD.onclick = function() {
+                var options = document.getElementById("sel_LSAD").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_LSAD.appendChild(reset_LSAD);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_GEOID = document.createElement('div');
+            div_GEOID.id = "div_GEOID";
+            div_GEOID.className= "filterselect";
+            document.getElementById("menu").appendChild(div_GEOID);
+            sel_GEOID = document.createElement('select');
+            sel_GEOID.multiple = true;
+            sel_GEOID.size = 10;
+            sel_GEOID.id = "sel_GEOID";
+            var GEOID_options_str = "<option value='' unselected></option>";
+            sel_GEOID.onchange = function(){filterFunc()};
+            GEOID_options_str  += '<option value="01">01</option>';
+            GEOID_options_str  += '<option value="02">02</option>';
+            GEOID_options_str  += '<option value="04">04</option>';
+            GEOID_options_str  += '<option value="05">05</option>';
+            GEOID_options_str  += '<option value="06">06</option>';
+            GEOID_options_str  += '<option value="08">08</option>';
+            GEOID_options_str  += '<option value="09">09</option>';
+            GEOID_options_str  += '<option value="10">10</option>';
+            GEOID_options_str  += '<option value="11">11</option>';
+            GEOID_options_str  += '<option value="12">12</option>';
+            GEOID_options_str  += '<option value="13">13</option>';
+            GEOID_options_str  += '<option value="15">15</option>';
+            GEOID_options_str  += '<option value="16">16</option>';
+            GEOID_options_str  += '<option value="17">17</option>';
+            GEOID_options_str  += '<option value="18">18</option>';
+            GEOID_options_str  += '<option value="19">19</option>';
+            GEOID_options_str  += '<option value="20">20</option>';
+            GEOID_options_str  += '<option value="21">21</option>';
+            GEOID_options_str  += '<option value="22">22</option>';
+            GEOID_options_str  += '<option value="23">23</option>';
+            GEOID_options_str  += '<option value="24">24</option>';
+            GEOID_options_str  += '<option value="25">25</option>';
+            GEOID_options_str  += '<option value="26">26</option>';
+            GEOID_options_str  += '<option value="27">27</option>';
+            GEOID_options_str  += '<option value="28">28</option>';
+            GEOID_options_str  += '<option value="29">29</option>';
+            GEOID_options_str  += '<option value="30">30</option>';
+            GEOID_options_str  += '<option value="31">31</option>';
+            GEOID_options_str  += '<option value="32">32</option>';
+            GEOID_options_str  += '<option value="33">33</option>';
+            GEOID_options_str  += '<option value="34">34</option>';
+            GEOID_options_str  += '<option value="35">35</option>';
+            GEOID_options_str  += '<option value="36">36</option>';
+            GEOID_options_str  += '<option value="37">37</option>';
+            GEOID_options_str  += '<option value="38">38</option>';
+            GEOID_options_str  += '<option value="39">39</option>';
+            GEOID_options_str  += '<option value="40">40</option>';
+            GEOID_options_str  += '<option value="41">41</option>';
+            GEOID_options_str  += '<option value="42">42</option>';
+            GEOID_options_str  += '<option value="44">44</option>';
+            GEOID_options_str  += '<option value="45">45</option>';
+            GEOID_options_str  += '<option value="46">46</option>';
+            GEOID_options_str  += '<option value="47">47</option>';
+            GEOID_options_str  += '<option value="48">48</option>';
+            GEOID_options_str  += '<option value="49">49</option>';
+            GEOID_options_str  += '<option value="50">50</option>';
+            GEOID_options_str  += '<option value="51">51</option>';
+            GEOID_options_str  += '<option value="53">53</option>';
+            GEOID_options_str  += '<option value="54">54</option>';
+            GEOID_options_str  += '<option value="55">55</option>';
+            GEOID_options_str  += '<option value="56">56</option>';
+            GEOID_options_str  += '<option value="60">60</option>';
+            GEOID_options_str  += '<option value="66">66</option>';
+            GEOID_options_str  += '<option value="69">69</option>';
+            GEOID_options_str  += '<option value="72">72</option>';
+            GEOID_options_str  += '<option value="78">78</option>';
+            sel_GEOID.innerHTML = GEOID_options_str;
+            div_GEOID.appendChild(sel_GEOID);
+            var lab_GEOID = document.createElement('div');
+            lab_GEOID.innerHTML = 'GEOID';
+            lab_GEOID.className = 'filterlabel';
+            div_GEOID.appendChild(lab_GEOID);
+            var reset_GEOID = document.createElement('div');
+            reset_GEOID.innerHTML = 'clear filter';
+            reset_GEOID.className = 'filterlabel';
+            reset_GEOID.onclick = function() {
+                var options = document.getElementById("sel_GEOID").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_GEOID.appendChild(reset_GEOID);
+        </script>
+    </body>
+</html>
